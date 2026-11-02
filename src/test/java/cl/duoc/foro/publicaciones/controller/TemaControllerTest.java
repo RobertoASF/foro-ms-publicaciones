@@ -43,10 +43,10 @@ class TemaControllerTest {
 
     @Test
     void buscarNoPideToken() throws Exception {
-        when(temaService.buscar(eq("java"), any(), any(), eq(0), eq(10)))
+        when(temaService.buscar(eq("commander"), any(), any(), eq(0), eq(10)))
                 .thenReturn(new PaginaResponse<>(List.of(), 0, 10, 0, 0));
 
-        mockMvc.perform(get("/api/temas/buscar").param("texto", "java"))
+        mockMvc.perform(get("/api/temas/buscar").param("texto", "commander"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElementos").value(0));
     }

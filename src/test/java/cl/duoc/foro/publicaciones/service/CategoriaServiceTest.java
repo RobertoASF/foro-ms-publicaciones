@@ -32,9 +32,9 @@ class CategoriaServiceTest {
 
     @Test
     void crearRechazaNombreRepetido() {
-        when(categoriaRepository.existsByNombreIgnoreCase("Deportes")).thenReturn(true);
+        when(categoriaRepository.existsByNombreIgnoreCase("Yu-Gi-Oh!")).thenReturn(true);
 
-        assertThatThrownBy(() -> categoriaService.crear(new CategoriaRequest("Deportes", "Descripción")))
+        assertThatThrownBy(() -> categoriaService.crear(new CategoriaRequest("Yu-Gi-Oh!", "Descripción")))
                 .isInstanceOf(ConflictoException.class);
         verify(categoriaRepository, never()).save(any());
     }

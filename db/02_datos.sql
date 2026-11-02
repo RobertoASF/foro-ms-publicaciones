@@ -4,43 +4,42 @@
 
 SET DEFINE OFF
 
-INSERT INTO categorias (nombre, descripcion) VALUES ('Tecnología', 'Programación, hardware y novedades del mundo digital');
-INSERT INTO categorias (nombre, descripcion) VALUES ('Videojuegos', 'Lanzamientos, recomendaciones y partidas');
-INSERT INTO categorias (nombre, descripcion) VALUES ('Deportes', 'Resultados, equipos y actividad física');
-INSERT INTO categorias (nombre, descripcion) VALUES ('Música', 'Artistas, discos y conciertos');
-INSERT INTO categorias (nombre, descripcion) VALUES ('Cine y series', 'Estrenos, críticas y recomendaciones');
-INSERT INTO categorias (nombre, descripcion) VALUES ('Cocina', 'Recetas, técnicas y datos para cocinar en casa');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Magic The Gathering', 'Mazos, formatos, reglas y novedades de Magic');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Mitos y Leyendas', 'El TCG chileno: ediciones, mazos y torneos');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Pokemon TCG', 'Expansiones, mazos y torneos del juego de cartas');
+INSERT INTO categorias (nombre, descripcion) VALUES ('One Piece TCG', 'Líderes, mazos y expansiones');
+INSERT INTO categorias (nombre, descripcion) VALUES ('Yu-Gi-Oh!', 'Arquetipos, listas de cartas prohibidas y duelos');
 
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('¿Qué lenguaje recomiendan para partir?', 'Quiero aprender a programar este año y no sé si partir con Java o con Python.',
-        (SELECT id FROM categorias WHERE nombre = 'Tecnología'), 3, 'camila', TIMESTAMP '2026-10-20 10:15:00');
+VALUES ('¿Commander o Modern para partir?', 'Quiero entrar a Magic este año y no sé si armar un mazo de Commander para jugar con amigos o partir con uno de Modern.',
+        (SELECT id FROM categorias WHERE nombre = 'Magic The Gathering'), 3, 'camila', TIMESTAMP '2026-10-20 10:15:00');
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('Mejores juegos cooperativos', 'Busco juegos para jugar con amigos los fines de semana, ojalá en PC.',
-        (SELECT id FROM categorias WHERE nombre = 'Videojuegos'), 4, 'diego', TIMESTAMP '2026-10-21 18:40:00');
+VALUES ('Torneos de Mitos y Leyendas en Santiago', 'Busco tiendas que organicen torneos los fines de semana. ¿Dónde están jugando?',
+        (SELECT id FROM categorias WHERE nombre = 'Mitos y Leyendas'), 4, 'diego', TIMESTAMP '2026-10-21 18:40:00');
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('Rutas para trotar en Santiago', 'Compartan sus rutas favoritas para trotar temprano y que tengan sombra.',
-        (SELECT id FROM categorias WHERE nombre = 'Deportes'), 3, 'camila', TIMESTAMP '2026-10-22 07:30:00');
+VALUES ('Mazos económicos para aprender a jugar', 'Quiero partir sin gastar tanto. ¿Qué mazo recomiendan para aprender las reglas?',
+        (SELECT id FROM categorias WHERE nombre = 'Pokemon TCG'), 3, 'camila', TIMESTAMP '2026-10-22 07:30:00');
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('Discos para estudiar', 'Necesito música tranquila para estudiar sin distraerme. ¿Qué están escuchando?',
-        (SELECT id FROM categorias WHERE nombre = 'Música'), 4, 'diego', TIMESTAMP '2026-10-23 21:05:00');
+VALUES ('¿Qué líder recomiendan para mi primer mazo?', 'Estoy armando mi primer mazo y no sé qué líder elegir. ¿Cuál es más fácil de jugar?',
+        (SELECT id FROM categorias WHERE nombre = 'One Piece TCG'), 4, 'diego', TIMESTAMP '2026-10-23 21:05:00');
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('Series cortas para ver en una semana', 'Recomienden series de una temporada que valgan la pena.',
-        (SELECT id FROM categorias WHERE nombre = 'Cine y series'), 2, 'moderador', TIMESTAMP '2026-10-24 22:10:00');
+VALUES ('Dónde revisar la lista de cartas prohibidas', 'Cada actualización cambia harto el formato. ¿Dónde revisan la lista vigente?',
+        (SELECT id FROM categorias WHERE nombre = 'Yu-Gi-Oh!'), 2, 'moderador', TIMESTAMP '2026-10-24 22:10:00');
 INSERT INTO temas (titulo, contenido, categoria_id, autor_id, autor_nombre, fecha_creacion)
-VALUES ('Pan amasado en casa', 'Mi masa queda muy dura. ¿Cuánto rato la dejan reposar?',
-        (SELECT id FROM categorias WHERE nombre = 'Cocina'), 3, 'camila', TIMESTAMP '2026-10-25 12:20:00');
+VALUES ('Cómo guardar las cartas más caras', 'Se me están doblando algunas cartas. ¿Usan doble funda o carpetas?',
+        (SELECT id FROM categorias WHERE nombre = 'Magic The Gathering'), 3, 'camila', TIMESTAMP '2026-10-25 12:20:00');
 
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = '¿Qué lenguaje recomiendan para partir?'), 'Python es más simple para empezar, y después puedes pasar a Java.', 4, 'diego', TIMESTAMP '2026-10-20 11:00:00');
+VALUES ((SELECT id FROM temas WHERE titulo = '¿Commander o Modern para partir?'), 'Commander es más entretenido en grupo, y puedes partir con un mazo preconstruido.', 4, 'diego', TIMESTAMP '2026-10-20 11:00:00');
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = '¿Qué lenguaje recomiendan para partir?'), 'Java te obliga a ordenar mejor el código desde el principio.', 2, 'moderador', TIMESTAMP '2026-10-20 12:30:00');
+VALUES ((SELECT id FROM temas WHERE titulo = '¿Commander o Modern para partir?'), 'Modern pide más inversión, así que yo partiría por el otro formato.', 2, 'moderador', TIMESTAMP '2026-10-20 12:30:00');
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = 'Mejores juegos cooperativos'), 'Prueba con alguno de supervivencia, se hacen muy entretenidos en grupo.', 3, 'camila', TIMESTAMP '2026-10-21 19:15:00');
+VALUES ((SELECT id FROM temas WHERE titulo = 'Torneos de Mitos y Leyendas en Santiago'), 'Revisa las tiendas de cartas del centro, varias publican sus torneos en redes sociales.', 3, 'camila', TIMESTAMP '2026-10-21 19:15:00');
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = 'Rutas para trotar en Santiago'), 'El parque Bicentenario es buena opción en la mañana.', 4, 'diego', TIMESTAMP '2026-10-22 08:45:00');
+VALUES ((SELECT id FROM temas WHERE titulo = 'Mazos económicos para aprender a jugar'), 'Los mazos preconstruidos sirven harto para aprender a jugar.', 4, 'diego', TIMESTAMP '2026-10-22 08:45:00');
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = 'Discos para estudiar'), 'A mí me funciona la música instrumental, sin letra.', 3, 'camila', TIMESTAMP '2026-10-23 21:40:00');
+VALUES ((SELECT id FROM temas WHERE titulo = '¿Qué líder recomiendan para mi primer mazo?'), 'Los mazos de inicio traen un líder listo para jugar, es buena forma de partir.', 3, 'camila', TIMESTAMP '2026-10-23 21:40:00');
 INSERT INTO comentarios (tema_id, contenido, autor_id, autor_nombre, fecha_creacion)
-VALUES ((SELECT id FROM temas WHERE titulo = 'Pan amasado en casa'), 'Déjala reposar unos 30 minutos tapada con un paño.', 2, 'moderador', TIMESTAMP '2026-10-25 13:00:00');
+VALUES ((SELECT id FROM temas WHERE titulo = 'Cómo guardar las cartas más caras'), 'Doble funda para las más caras y carpeta de nueve bolsillos para el resto.', 2, 'moderador', TIMESTAMP '2026-10-25 13:00:00');
 
 COMMIT;

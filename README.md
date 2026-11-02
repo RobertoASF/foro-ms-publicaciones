@@ -1,6 +1,6 @@
 # ms-publicaciones
 
-Microservicio del foro en línea para buscar, ver, publicar y comentar temas. Valida el token JWT que entrega `ms-usuarios` y usa el rol que viene en él para decidir qué puede hacer cada persona.
+Microservicio del foro de TCG (juegos de cartas coleccionables) para buscar, ver, publicar y comentar temas. Valida el token JWT que entrega `ms-usuarios` y usa el rol que viene en él para decidir qué puede hacer cada persona.
 
 Hecho con Java 21, Spring Boot 4.1, Spring Data JPA, Spring Security y Oracle.
 
@@ -43,8 +43,8 @@ Ejemplo para publicar un tema:
 
 ```json
 {
-  "titulo": "Mejores juegos cooperativos",
-  "contenido": "Busco juegos para jugar con amigos los fines de semana.",
+  "titulo": "Torneos de Mitos y Leyendas en Santiago",
+  "contenido": "Busco tiendas que organicen torneos los fines de semana.",
   "categoriaId": 2
 }
 ```
@@ -68,7 +68,9 @@ src/main/java/cl/duoc/foro/publicaciones
 Los scripts están en la carpeta `db` y se ejecutan conectado como `FORO_PUBLICACIONES`:
 
 1. `01_tablas.sql` crea las tablas.
-2. `02_datos.sql` carga 6 categorías, 6 temas y 6 comentarios.
+2. `02_datos.sql` carga 5 categorías, 6 temas y 6 comentarios.
+
+Las categorías son Magic The Gathering, Mitos y Leyendas, Pokemon TCG, One Piece TCG y Yu-Gi-Oh!
 
 ## Variables de entorno
 

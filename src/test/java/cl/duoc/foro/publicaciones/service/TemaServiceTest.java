@@ -93,7 +93,7 @@ class TemaServiceTest {
     private Categoria categoria() {
         Categoria categoria = new Categoria();
         categoria.setId(1L);
-        categoria.setNombre("Tecnología");
+        categoria.setNombre("Pokemon TCG");
         return categoria;
     }
 

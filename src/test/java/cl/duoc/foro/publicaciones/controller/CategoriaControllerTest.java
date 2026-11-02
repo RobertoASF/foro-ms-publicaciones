@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class CategoriaControllerTest {
 
     private static final String CATEGORIA = """
-            {"nombre": "Viajes", "descripcion": "Destinos y consejos"}
+            {"nombre": "Digimon TCG", "descripcion": "Mazos y torneos"}
             """;
 
     @Autowired
@@ -45,7 +45,7 @@ class CategoriaControllerTest {
 
     @Test
     void crearConRolAdminResponde201() throws Exception {
-        when(categoriaService.crear(any())).thenReturn(new CategoriaResponse(7L, "Viajes", "Destinos y consejos"));
+        when(categoriaService.crear(any())).thenReturn(new CategoriaResponse(6L, "Digimon TCG", "Mazos y torneos"));
 
         mockMvc.perform(post("/api/categorias")
                         .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
