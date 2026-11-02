@@ -72,12 +72,12 @@ Los scripts están en la carpeta `db` y se ejecutan conectado como `FORO_PUBLICA
 
 Las categorías son Magic The Gathering, Mitos y Leyendas, Pokemon TCG, One Piece TCG y Yu-Gi-Oh!
 
-## Variables de entorno
+## Configuración
+
+Está en `src/main/resources/application.properties`. La conexión a Oracle lee el Wallet desde la raíz del disco, en `C:\Wallet_dbfullstack3`. Las claves no van en ese archivo, se entregan con estas variables de entorno:
 
 | Variable | Descripción |
 |---|---|
-| `DB_URL` | Conexión JDBC a Oracle |
-| `DB_USUARIO` | Usuario de la base de datos |
 | `DB_PASSWORD` | Clave de la base de datos |
 | `JWT_SECRETO` | El mismo secreto que usa `ms-usuarios` |
 | `CORS_ORIGEN` | Origen web permitido |
