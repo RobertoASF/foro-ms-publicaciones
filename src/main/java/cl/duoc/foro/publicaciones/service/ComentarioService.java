@@ -26,9 +26,14 @@ public class ComentarioService {
     @Transactional(readOnly = true)
     public List<ComentarioResponse> listarPorTema(Long temaId) {
         buscarTema(temaId);
-        return comentarioRepository.findByTemaIdOrderByFechaCreacionAsc(temaId).stream()
+        return comentarioRepository.findByTemaIdAndBaneadoOrderByFechaCreacionAsc(temaId, false).stream()
                 .map(ComentarioResponse::desde)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ComentarioResponse obtener(Long id) {
+        return ComentarioResponse.desde(buscarComentario(id));
     }
 
     @Transactional
@@ -67,13 +72,23 @@ public class ComentarioService {
         log.info("Comentario {} eliminado por el usuario {}", id, usuario.id());
     }
 
+    @Transactional
+    public void cambiarBaneo(Long id, boolean baneado) {
+        if (comentarioRepository.cambiarBaneo(id, baneado) == 0) {
+            throw new RecursoNoEncontradoException("No existe el comentario con id " + id);
+        }
+        log.info("Comentario {} {}", id, baneado ? "baneado" : "visible nuevamente");
+    }
+
     private Comentario buscarComentario(Long id) {
         return comentarioRepository.findById(id)
+                .filter(comentario -> !comentario.isBaneado())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el comentario con id " + id));
     }
 
     private Tema buscarTema(Long id) {
         return temaRepository.findById(id)
+                .filter(tema -> !tema.isBaneado())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el tema con id " + id));
     }
 }

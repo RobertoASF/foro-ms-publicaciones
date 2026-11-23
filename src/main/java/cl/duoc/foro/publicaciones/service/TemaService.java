@@ -52,8 +52,8 @@ public class TemaService {
 
     @Transactional(readOnly = true)
     public TemaDetalleResponse obtener(Long id) {
-        Tema tema = buscarTema(id);
-        List<ComentarioResponse> comentarios = comentarioRepository.findByTemaIdOrderByFechaCreacionAsc(id).stream()
+        Tema tema = buscarVisible(id);
+        List<ComentarioResponse> comentarios = comentarioRepository.findByTemaIdAndBaneadoOrderByFechaCreacionAsc(id, false).stream()
                 .map(ComentarioResponse::desde)
                 .toList();
         return new TemaDetalleResponse(TemaResponse.desde(tema, comentarios.size()), comentarios);
@@ -75,7 +75,7 @@ public class TemaService {
 
     @Transactional
     public TemaResponse actualizar(Long id, TemaRequest datos, UsuarioAutenticado usuario) {
-        Tema tema = buscarTema(id);
+        Tema tema = buscarVisible(id);
         if (!usuario.esAutor(tema.getAutorId())) {
             throw new AccionNoPermitidaException("Solo el autor puede editar este tema");
         }
@@ -85,12 +85,12 @@ public class TemaService {
         tema.setCategoria(buscarCategoria(datos.categoriaId()));
         temaRepository.flush();
         log.info("Tema {} actualizado", id);
-        return TemaResponse.desde(tema, comentarioRepository.countByTemaId(id));
+        return TemaResponse.desde(tema, comentarioRepository.countByTemaIdAndBaneado(id, false));
     }
 
     @Transactional
     public void eliminar(Long id, UsuarioAutenticado usuario) {
-        Tema tema = buscarTema(id);
+        Tema tema = buscarVisible(id);
         if (!usuario.puedeBorrarDe(tema.getAutorId())) {
             throw new AccionNoPermitidaException("No puedes eliminar temas de otros usuarios");
         }
@@ -98,10 +98,19 @@ public class TemaService {
         log.info("Tema {} eliminado por el usuario {}", id, usuario.id());
     }
 
+    @Transactional
+    public void cambiarBaneo(Long id, boolean baneado) {
+        if (temaRepository.cambiarBaneo(id, baneado) == 0) {
+            throw new RecursoNoEncontradoException("No existe el tema con id " + id);
+        }
+        log.info("Tema {} {}", id, baneado ? "baneado" : "visible nuevamente");
+    }
+
     // Los filtros son opcionales, asi que solo se agregan a la consulta los que vienen
     private Specification<Tema> filtro(String texto, Long categoriaId, Long autorId) {
         return (raiz, consulta, criterio) -> {
             List<Predicate> condiciones = new ArrayList<>();
+            condiciones.add(criterio.equal(raiz.get("baneado"), false));
             if (texto != null && !texto.isBlank()) {
                 String patron = "%" + texto.trim().toLowerCase(Locale.ROOT) + "%";
                 condiciones.add(criterio.or(
@@ -127,8 +136,10 @@ public class TemaService {
                 .collect(Collectors.toMap(TotalComentarios::getTemaId, TotalComentarios::getTotal));
     }
 
-    private Tema buscarTema(Long id) {
+    // Un tema baneado se responde como inexistente para que nadie lo vea
+    private Tema buscarVisible(Long id) {
         return temaRepository.findById(id)
+                .filter(tema -> !tema.isBaneado())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe el tema con id " + id));
     }
 

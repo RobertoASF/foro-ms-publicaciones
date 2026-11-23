@@ -1,6 +1,7 @@
 package cl.duoc.foro.publicaciones.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.type.NumericBooleanConverter;
 
 @Entity
 @Table(name = "comentarios")
@@ -39,6 +41,11 @@ public class Comentario {
 
     @Column(nullable = false, length = 30)
     private String autorNombre;
+
+    // La columna es NUMBER(1) para que funcione igual en cualquier version de Oracle
+    @Convert(converter = NumericBooleanConverter.class)
+    @Column(nullable = false)
+    private boolean baneado;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
