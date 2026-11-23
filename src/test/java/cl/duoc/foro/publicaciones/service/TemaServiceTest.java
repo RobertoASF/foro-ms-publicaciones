@@ -90,6 +90,24 @@ class TemaServiceTest {
         verify(temaRepository).delete(tema);
     }
 
+    @Test
+    void unTemaBaneadoSeRespondeComoInexistente() {
+        Tema baneado = temaDe(3L);
+        baneado.setBaneado(true);
+        when(temaRepository.findById(1L)).thenReturn(Optional.of(baneado));
+
+        assertThatThrownBy(() -> temaService.obtener(1L))
+                .isInstanceOf(RecursoNoEncontradoException.class);
+    }
+
+    @Test
+    void banearUnTemaInexistenteFalla() {
+        when(temaRepository.cambiarBaneo(99L, true)).thenReturn(0);
+
+        assertThatThrownBy(() -> temaService.cambiarBaneo(99L, true))
+                .isInstanceOf(RecursoNoEncontradoException.class);
+    }
+
     private Categoria categoria() {
         Categoria categoria = new Categoria();
         categoria.setId(1L);
