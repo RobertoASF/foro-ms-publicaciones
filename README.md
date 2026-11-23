@@ -35,7 +35,19 @@ Hecho con Java 21, Spring Boot 4.1, Spring Data JPA, Spring Security y Oracle.
 | GET | `/api/temas/{id}/comentarios` | Público | Lista los comentarios de un tema |
 | POST | `/api/temas/{id}/comentarios` | Con sesión | Comenta un tema |
 | PUT | `/api/comentarios/{id}` | Autor | Edita un comentario |
+| GET | `/api/comentarios/{id}` | Público | Muestra un comentario |
 | DELETE | `/api/comentarios/{id}` | Autor, MODERADOR o ADMIN | Elimina un comentario |
+
+### Baneo de contenido
+
+Estas rutas las usa `ms-moderacion`, que reenvía el token del moderador.
+
+| Método | Ruta | Acceso | Descripción |
+|---|---|---|---|
+| PUT | `/api/temas/{id}/baneo` | MODERADOR o ADMIN | Oculta o vuelve a mostrar un tema |
+| PUT | `/api/comentarios/{id}/baneo` | MODERADOR o ADMIN | Oculta o vuelve a mostrar un comentario |
+
+El cuerpo es `{"baneado": true}` o `{"baneado": false}`. Lo baneado no aparece en listados, búsquedas, detalle ni en los totales; si alguien lo pide por su id, la respuesta es 404.
 
 Las rutas con sesión piden el encabezado `Authorization: Bearer <token>`. El autor nunca se envía en la petición, siempre se toma del token.
 
@@ -69,6 +81,9 @@ Los scripts están en la carpeta `db` y se ejecutan conectado como `FORO_PUBLICA
 
 1. `01_tablas.sql` crea las tablas.
 2. `02_datos.sql` carga 5 categorías, 6 temas y 6 comentarios.
+3. `03_contenido_baneado.sql` agrega un tema y un comentario que ya están baneados.
+
+Si la base se creó con la versión 1 (semana 2), antes de `03_contenido_baneado.sql` se ejecuta `migraciones/v1_a_v2.sql`, que agrega la columna `baneado`.
 
 Las categorías son Magic The Gathering, Mitos y Leyendas, Pokemon TCG, One Piece TCG y Yu-Gi-Oh!
 
