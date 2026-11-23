@@ -18,8 +18,8 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
             SELECT new cl.duoc.foro.publicaciones.dto.CategoriaResumenResponse(
                        c.id, c.nombre, COUNT(DISTINCT t.id), COUNT(co.id), MAX(t.fechaCreacion))
             FROM Categoria c
-            LEFT JOIN Tema t ON t.categoria = c
-            LEFT JOIN Comentario co ON co.tema = t
+            LEFT JOIN Tema t ON t.categoria = c AND t.baneado = false
+            LEFT JOIN Comentario co ON co.tema = t AND co.baneado = false
             GROUP BY c.id, c.nombre
             ORDER BY COUNT(DISTINCT t.id) DESC, c.nombre
             """)

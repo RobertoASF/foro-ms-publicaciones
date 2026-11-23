@@ -35,7 +35,7 @@ public class SeguridadConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(rutas -> rutas
-                        .requestMatchers(HttpMethod.GET, "/api/categorias/**", "/api/temas/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categorias/**", "/api/temas/**", "/api/comentarios/**").permitAll()
                         .requestMatchers("/actuator/health/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(servidor -> servidor

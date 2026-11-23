@@ -1,5 +1,6 @@
 package cl.duoc.foro.publicaciones.controller;
 
+import cl.duoc.foro.publicaciones.dto.BaneoRequest;
 import cl.duoc.foro.publicaciones.dto.ComentarioRequest;
 import cl.duoc.foro.publicaciones.dto.ComentarioResponse;
 import cl.duoc.foro.publicaciones.dto.MensajeResponse;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -80,6 +82,14 @@ public class TemaController {
     public MensajeResponse eliminar(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         temaService.eliminar(id, UsuarioAutenticado.desde(jwt));
         return new MensajeResponse("Tema eliminado");
+    }
+
+    // Lo llama ms-moderacion con el token del moderador
+    @PutMapping("/{id}/baneo")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERADOR')")
+    public MensajeResponse cambiarBaneo(@PathVariable Long id, @Valid @RequestBody BaneoRequest datos) {
+        temaService.cambiarBaneo(id, datos.baneado());
+        return new MensajeResponse(datos.baneado() ? "Tema baneado" : "Tema visible nuevamente");
     }
 
     @GetMapping("/{id}/comentarios")

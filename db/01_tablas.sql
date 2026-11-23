@@ -2,6 +2,7 @@
 -- Se ejecuta conectado como FORO_PUBLICACIONES.
 -- autor_id apunta a un usuario de ms-usuarios. No lleva clave foranea
 -- porque cada microservicio es dueño de sus propios datos.
+-- baneado = 1 oculta el tema o comentario del foro. Lo cambia ms-moderacion.
 
 CREATE TABLE categorias (
     id          NUMBER(19)         GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -16,6 +17,7 @@ CREATE TABLE temas (
     categoria_id        NUMBER(19)          NOT NULL REFERENCES categorias (id),
     autor_id            NUMBER(19)          NOT NULL,
     autor_nombre        VARCHAR2(30 CHAR)   NOT NULL,
+    baneado             NUMBER(1)           DEFAULT 0 NOT NULL CHECK (baneado IN (0, 1)),
     fecha_creacion      TIMESTAMP           DEFAULT CURRENT_TIMESTAMP NOT NULL,
     fecha_actualizacion TIMESTAMP
 );
@@ -26,6 +28,7 @@ CREATE TABLE comentarios (
     contenido           VARCHAR2(1000 CHAR) NOT NULL,
     autor_id            NUMBER(19)          NOT NULL,
     autor_nombre        VARCHAR2(30 CHAR)   NOT NULL,
+    baneado             NUMBER(1)           DEFAULT 0 NOT NULL CHECK (baneado IN (0, 1)),
     fecha_creacion      TIMESTAMP           DEFAULT CURRENT_TIMESTAMP NOT NULL,
     fecha_actualizacion TIMESTAMP
 );
